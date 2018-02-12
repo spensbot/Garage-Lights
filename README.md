@@ -18,3 +18,5 @@ This is currently only compiled in VST2 and VST3 64bit formats. If you need anot
 
 I created this plugin because I searched far and wide for something with the same features.  It either doesn't exist, or I couldn't find it... Until now. 
 Hope you enjoy the plugin!
+
+![alt text](https://github.com/spensbot/Garage-Lights/blob/master/Gui_Purple.png)
