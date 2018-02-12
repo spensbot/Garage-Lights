@@ -12,4 +12,9 @@ Currently only supports ENNTEC DMX Pro compatible USB interfaces. Several of the
 
 Communicates with the USB device using the included FTDI driver. The included driver is for windows 64 bit. Additional drivers can be downloaded here: http://www.ftdichip.com/Drivers/D2XX.htm
 
-I created this plugin because I searched far and wide for something with the same features.  It either doesn't exist, or I couldn't find it... Until now. Hope you enjoy the plugin!
+
+I'm not opposed to adding features/fixing bugs within the code. Let me know if you have ideas/problems and I might look into it :)
+This is currently only compiled in VST2 and VST3 64bit formats. If you need another format let me know. I might try to help.
+
+I created this plugin because I searched far and wide for something with the same features.  It either doesn't exist, or I couldn't find it... Until now. 
+Hope you enjoy the plugin!
