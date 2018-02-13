@@ -18,4 +18,4 @@ I'm not opposed to adding features/fixing bugs within the code. Let me know if y
 I created this plugin because I searched far and wide for something with the same features.  It either doesn't exist, or I couldn't find it... Until now. 
 Hope you enjoy the plugin!
 
-![alt text](https://github.com/spensbot/Garage-Lights/blob/master/Gui_Purple.png)
+![alt text](https://github.com/spensbot/Garage-Lights/blob/master/Builds/Gui_Purple.png)
