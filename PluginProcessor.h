@@ -17,13 +17,13 @@
 //==============================================================================
 /**
 */
-class CustomLightShowAudioProcessor  : public AudioProcessor, public AudioProcessorValueTreeState::Listener
+class GarageLightsAudioProcessor  : public AudioProcessor, public AudioProcessorValueTreeState::Listener
 {
 public:
 
     //==============================================================================
-    CustomLightShowAudioProcessor();
-    ~CustomLightShowAudioProcessor();
+    GarageLightsAudioProcessor();
+    ~GarageLightsAudioProcessor();
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -68,7 +68,7 @@ private:
     //==============================================================================
 	AudioProcessorValueTreeState parameters;
 
-	void CustomLightShowAudioProcessor::parameterChanged(const String & parameterID, float newValue) override;
+	void GarageLightsAudioProcessor::parameterChanged(const String & parameterID, float newValue) override;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CustomLightShowAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GarageLightsAudioProcessor)
 };

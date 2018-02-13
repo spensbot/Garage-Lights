@@ -13,7 +13,7 @@
 
 
 //==============================================================================
-CustomLightShowAudioProcessor::CustomLightShowAudioProcessor()
+GarageLightsAudioProcessor::GarageLightsAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -41,19 +41,19 @@ CustomLightShowAudioProcessor::CustomLightShowAudioProcessor()
 	blackout = false;
 }
 
-CustomLightShowAudioProcessor::~CustomLightShowAudioProcessor()
+GarageLightsAudioProcessor::~GarageLightsAudioProcessor()
 {
 	usbDmxPro->stopTimer();
 	usbDmxPro->disconnect();
 }
 
 //==============================================================================
-const String CustomLightShowAudioProcessor::getName() const
+const String GarageLightsAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool CustomLightShowAudioProcessor::acceptsMidi() const
+bool GarageLightsAudioProcessor::acceptsMidi() const
 {
    #if JucePlugin_WantsMidiInput
     return true;
@@ -62,7 +62,7 @@ bool CustomLightShowAudioProcessor::acceptsMidi() const
    #endif
 }
 
-bool CustomLightShowAudioProcessor::producesMidi() const
+bool GarageLightsAudioProcessor::producesMidi() const
 {
    #if JucePlugin_ProducesMidiOutput
     return true;
@@ -71,7 +71,7 @@ bool CustomLightShowAudioProcessor::producesMidi() const
    #endif
 }
 
-bool CustomLightShowAudioProcessor::isMidiEffect() const
+bool GarageLightsAudioProcessor::isMidiEffect() const
 {
    #if JucePlugin_IsMidiEffect
     return true;
@@ -80,49 +80,49 @@ bool CustomLightShowAudioProcessor::isMidiEffect() const
    #endif
 }
 
-double CustomLightShowAudioProcessor::getTailLengthSeconds() const
+double GarageLightsAudioProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int CustomLightShowAudioProcessor::getNumPrograms()
+int GarageLightsAudioProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
                 // so this should be at least 1, even if you're not really implementing programs.
 }
 
-int CustomLightShowAudioProcessor::getCurrentProgram()
+int GarageLightsAudioProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void CustomLightShowAudioProcessor::setCurrentProgram (int index)
+void GarageLightsAudioProcessor::setCurrentProgram (int index)
 {
 }
 
-const String CustomLightShowAudioProcessor::getProgramName (int index)
+const String GarageLightsAudioProcessor::getProgramName (int index)
 {
     return {};
 }
 
-void CustomLightShowAudioProcessor::changeProgramName (int index, const String& newName)
+void GarageLightsAudioProcessor::changeProgramName (int index, const String& newName)
 {
 }
 
 //==============================================================================
-void CustomLightShowAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void GarageLightsAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
 	
 }
 
-void CustomLightShowAudioProcessor::releaseResources()
+void GarageLightsAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool CustomLightShowAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool GarageLightsAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
   #if JucePlugin_IsMidiEffect
     ignoreUnused (layouts);
@@ -145,7 +145,7 @@ bool CustomLightShowAudioProcessor::isBusesLayoutSupported (const BusesLayout& l
 }
 #endif
 
-void CustomLightShowAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
+void GarageLightsAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
 	buffer.clear();
 
@@ -153,24 +153,24 @@ void CustomLightShowAudioProcessor::processBlock (AudioSampleBuffer& buffer, Mid
 }
 
 //==============================================================================
-bool CustomLightShowAudioProcessor::hasEditor() const
+bool GarageLightsAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-AudioProcessorEditor* CustomLightShowAudioProcessor::createEditor()
+AudioProcessorEditor* GarageLightsAudioProcessor::createEditor()
 {
-    return new CustomLightShowAudioProcessorEditor (*this, parameters);
+    return new GarageLightsAudioProcessorEditor (*this, parameters);
 }
 
 //==============================================================================
-void CustomLightShowAudioProcessor::getStateInformation (MemoryBlock& destData)
+void GarageLightsAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
 	ScopedPointer<XmlElement> xml(parameters.state.createXml());
 	copyXmlToBinary(*xml, destData);
 }
 
-void CustomLightShowAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void GarageLightsAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
 	ScopedPointer<XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
 	if (xmlState != nullptr)
@@ -182,9 +182,9 @@ void CustomLightShowAudioProcessor::setStateInformation (const void* data, int s
 // This creates new instances of the plugin..
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new CustomLightShowAudioProcessor();
+    return new GarageLightsAudioProcessor();
 }
 
-void CustomLightShowAudioProcessor::parameterChanged(const String & parameterID, float newValue) {
+void GarageLightsAudioProcessor::parameterChanged(const String & parameterID, float newValue) {
 	usbDmxPro->myDmx[parameterID.getIntValue()] = (int)newValue;
 }

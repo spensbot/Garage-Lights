@@ -13,7 +13,7 @@
 
 
 //==============================================================================
-CustomLightShowAudioProcessorEditor::CustomLightShowAudioProcessorEditor (CustomLightShowAudioProcessor& p, AudioProcessorValueTreeState& vts)
+GarageLightsAudioProcessorEditor::GarageLightsAudioProcessorEditor (GarageLightsAudioProcessor& p, AudioProcessorValueTreeState& vts)
     : AudioProcessorEditor (&p), processor (p), valueTreeState(vts)
 {
 	setSize(gp.width, gp.height);
@@ -86,12 +86,12 @@ CustomLightShowAudioProcessorEditor::CustomLightShowAudioProcessorEditor (Custom
 
 }
 
-CustomLightShowAudioProcessorEditor::~CustomLightShowAudioProcessorEditor()
+GarageLightsAudioProcessorEditor::~GarageLightsAudioProcessorEditor()
 {
 }
 
 //==============================================================================
-void CustomLightShowAudioProcessorEditor::paint (Graphics& g)
+void GarageLightsAudioProcessorEditor::paint (Graphics& g)
 {
 	gp.drawBackground(g, processor.colourId);
 
@@ -105,13 +105,13 @@ void CustomLightShowAudioProcessorEditor::paint (Graphics& g)
 	
 }
 
-void CustomLightShowAudioProcessorEditor::resized()
+void GarageLightsAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 }
 
-void CustomLightShowAudioProcessorEditor::buttonClicked(Button* button) {
+void GarageLightsAudioProcessorEditor::buttonClicked(Button* button) {
 	if (button == &connectUsbButton) {
 		if (!processor.usbDmxPro->connected) {
 			processor.usbDmxPro->connect();
@@ -145,7 +145,7 @@ void CustomLightShowAudioProcessorEditor::buttonClicked(Button* button) {
 	repaint();
 }
 
-void CustomLightShowAudioProcessorEditor::pageChange(int direction) {
+void GarageLightsAudioProcessorEditor::pageChange(int direction) {
 
 	//Turn off visiblility for the current page's sliders.
 	int startingChannel = (processor.channelPage - 1) * 32 + 1;
@@ -171,7 +171,7 @@ void CustomLightShowAudioProcessorEditor::pageChange(int direction) {
 	repaint();
 }
 
-void CustomLightShowAudioProcessorEditor::determineConnectionStatus() {
+void GarageLightsAudioProcessorEditor::determineConnectionStatus() {
 
 	if (connectAttempt) {
 		if (processor.usbDmxPro->connected) {

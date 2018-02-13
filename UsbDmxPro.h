@@ -9,7 +9,7 @@
 */
 
 //Add the FTDI dynamic library to the project. 
-#pragma comment(lib, "C:/Users/Spenser/Documents/JUCE Docs/Projects/Custom Light Show/Source/ftd2xx.lib")
+#pragma comment(lib, "C:/Users/Spenser/Documents/JUCE Docs/Projects/Garage Lights/Source/ftd2xx.lib")
 
 #include "pro_driver.h"
 #include "../JuceLibraryCode/JuceHeader.h"

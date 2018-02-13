@@ -18,11 +18,11 @@
 /**
 */
 
-class CustomLightShowAudioProcessorEditor  : public AudioProcessorEditor, public Button::Listener
+class GarageLightsAudioProcessorEditor  : public AudioProcessorEditor, public Button::Listener
 {
 public:
-	CustomLightShowAudioProcessorEditor(CustomLightShowAudioProcessor&, AudioProcessorValueTreeState& vts);
-    ~CustomLightShowAudioProcessorEditor();
+	GarageLightsAudioProcessorEditor(GarageLightsAudioProcessor&, AudioProcessorValueTreeState& vts);
+    ~GarageLightsAudioProcessorEditor();
 
     //==============================================================================
     void paint (Graphics&) override;
@@ -40,7 +40,7 @@ private:
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    CustomLightShowAudioProcessor& processor;
+    GarageLightsAudioProcessor& processor;
 
 	AudioProcessorValueTreeState& valueTreeState;
 
@@ -62,5 +62,5 @@ private:
 
 	boolean connectAttempt;
 
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CustomLightShowAudioProcessorEditor)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GarageLightsAudioProcessorEditor)
 };
