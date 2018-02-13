@@ -28,7 +28,8 @@ CustomLightShowAudioProcessor::CustomLightShowAudioProcessor()
 {
 	for (int i = 0; i < 512; i++) {
 		String channelNumber = (String)(i + 1);
-		parameters.createAndAddParameter("channel" + channelNumber, "Channel " + channelNumber, String(), NormalisableRange<float>(0.0f, 255.0f, 1.0f), 0.0f, nullptr, nullptr);
+		parameters.createAndAddParameter(channelNumber, "Channel " + channelNumber, String(), NormalisableRange<float>(0.0f, 255.0f, 1.0f), 0.0f, nullptr, nullptr);
+		parameters.addParameterListener(channelNumber, this);
 	}
 	
 	parameters.state = ValueTree(Identifier("DmxUniverse"));
@@ -42,8 +43,7 @@ CustomLightShowAudioProcessor::CustomLightShowAudioProcessor()
 
 CustomLightShowAudioProcessor::~CustomLightShowAudioProcessor()
 {
-	usbDmxPro->signalThreadShouldExit();
-	usbDmxPro->stopThread(2000);
+	usbDmxPro->stopTimer();
 	usbDmxPro->disconnect();
 }
 
@@ -183,4 +183,8 @@ void CustomLightShowAudioProcessor::setStateInformation (const void* data, int s
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new CustomLightShowAudioProcessor();
+}
+
+void CustomLightShowAudioProcessor::parameterChanged(const String & parameterID, float newValue) {
+	usbDmxPro->myDmx[parameterID.getIntValue()] = (int)newValue;
 }

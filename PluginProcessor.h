@@ -17,7 +17,7 @@
 //==============================================================================
 /**
 */
-class CustomLightShowAudioProcessor  : public AudioProcessor
+class CustomLightShowAudioProcessor  : public AudioProcessor, public AudioProcessorValueTreeState::Listener
 {
 public:
 
@@ -67,6 +67,8 @@ public:
 private:
     //==============================================================================
 	AudioProcessorValueTreeState parameters;
+
+	void CustomLightShowAudioProcessor::parameterChanged(const String & parameterID, float newValue) override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CustomLightShowAudioProcessor)
 };

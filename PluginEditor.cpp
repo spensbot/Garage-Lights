@@ -71,7 +71,7 @@ CustomLightShowAudioProcessorEditor::CustomLightShowAudioProcessorEditor (Custom
 		//Set slider settings.
 		addChildComponent(dmxLevelSlider[slider]);
 		dmxLevelSlider[slider].setSliderStyle(Slider::SliderStyle::LinearBarVertical);
-		dmxLevelSliderAttachment[slider] = new SliderAttachment(valueTreeState, "channel" + (String)(slider + 1), dmxLevelSlider[slider]);
+		dmxLevelSliderAttachment[slider] = new SliderAttachment(valueTreeState, (String)(slider + 1), dmxLevelSlider[slider]);
 
 		//Set Slider positions.
 		int xValue = gp.padding * (slider%16 + 1) + gp.sliderWidth * (slider%16);
@@ -172,15 +172,21 @@ void CustomLightShowAudioProcessorEditor::pageChange(int direction) {
 }
 
 void CustomLightShowAudioProcessorEditor::determineConnectionStatus() {
-	
-	connectUsbButton.setButtonText("Connect USB");
+
+	if (connectAttempt) {
+		if (processor.usbDmxPro->connected) {
+			connectUsbButton.setButtonText("Connected");
+		}
+		else {
+			connectUsbButton.setButtonText("Connect USB");
+			consoleText = "Connection failed.\nMake sure you have an Open DMX compatible device.\nTry disconnecting, then connecting again.";
+		}
+	}
+	connectAttempt = false;
+
 
 	if (processor.usbDmxPro->connected) {
 		consoleText = processor.usbDmxPro->getConnectionInfoString();
-		connectUsbButton.setButtonText("Connected");
-	}
-	else if (connectAttempt) {
-		consoleText = "Connection failed.\nMake sure you have an Open DMX compatible device.\nTry disconnecting, then connecting again.";
 	}
 	else if (processor.usbDmxPro->numDevices == 0) {
 		consoleText = "No connection.\nCould not find any compatible devices.\nPlease connect a USB Dmx pro compatible device and retry.\nMake sure your FTDI driver is installed.";
@@ -191,7 +197,5 @@ void CustomLightShowAudioProcessorEditor::determineConnectionStatus() {
 	else {
 		consoleText = "No connection.\nFound " + (String)processor.usbDmxPro->numDevices + " compatible devices.\nPlease disconnect all devices except the one you wish to use.\nAttempting connection with multiple devices available will connect to a random device.";
 	}
-
-	connectAttempt = false;
 }
 

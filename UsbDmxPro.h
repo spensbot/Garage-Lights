@@ -13,20 +13,26 @@
 
 #include "pro_driver.h"
 #include "../JuceLibraryCode/JuceHeader.h"
+#include <chrono>
 
 #define DMX_DATA_LENGTH 513 // Includes the start code 
 
-class UsbDmxPro : public Thread {
+typedef std::chrono::high_resolution_clock Clock;
+
+class UsbDmxPro : public Timer{
 
 public:
 
-	UsbDmxPro(AudioProcessorValueTreeState* _params, boolean* _blackout) : Thread("Usb Comm Thread"), params(_params), blackout(_blackout) {
+	UsbDmxPro(AudioProcessorValueTreeState* _params, boolean* _blackout) : params(_params), blackout(_blackout) {
 		connected = false;
 		getNumFtdiDevices();
+		
+		memset(blackoutDmx, 0, DMX_DATA_LENGTH);
+		myDmx[0] = 0;
 	}
 
 	~UsbDmxPro() {
-		stopThread(2000);
+		stopTimer();
 	}
 
 	// old school globals
@@ -47,6 +53,9 @@ public:
 	boolean connected;
 	boolean* blackout;
 	AudioProcessorValueTreeState* params;
+	unsigned char myDmx[DMX_DATA_LENGTH];
+	unsigned char blackoutDmx[DMX_DATA_LENGTH];
+	
 
 
 	//Open the connected usb device, set communication timeouts, and get connection info.
@@ -106,7 +115,11 @@ public:
 		MABTime = (int)(PRO_Params.MaBTime * 10.67);
 		refreshRate = PRO_Params.RefreshRate;
 
-		startThread();
+		for (int i = 1; i <= 512; i++) {
+			myDmx[i] = *params->getRawParameterValue((String)i);
+		}
+
+		startTimerHz(40);
 	}
 
 	void disconnect() {
@@ -119,19 +132,13 @@ public:
 	boolean sendDmx(boolean blackout) {
 		int response;
 
-		unsigned char myDmx[DMX_DATA_LENGTH];
-		// initialize with data to send
-		memset(myDmx, 0, DMX_DATA_LENGTH);
-		// Start Code = 0
-		myDmx[0] = 0;
-		//If the blackout button isn't on, fill Dmx array positions 1-512
-		if (!blackout) {
-			for (int i = 1; i < 513; i++) {
-				myDmx[i] = *params->getRawParameterValue("channel" + (String)i);
-			}
+		if (blackout) {
+			response = FTDI_SendData(SET_DMX_TX_MODE, blackoutDmx, DMX_DATA_LENGTH);		    
 		}
-		// actual send function called 
-		response = FTDI_SendData(SET_DMX_TX_MODE, myDmx, DMX_DATA_LENGTH);
+		else {
+			response = FTDI_SendData(SET_DMX_TX_MODE, myDmx, DMX_DATA_LENGTH);
+		}
+		
 		// check response from Send function
 		if (response < 0)
 		{
@@ -149,12 +156,23 @@ public:
 		return part1 + part2 + part3;
 	}
 
+
 private:
 
-	void run() override {
-		while (!threadShouldExit() && connected) {
-			wait(25);
-			sendDmx(*blackout);
+	void timerCallback() {
+		long long duration;
+		long long averageDuration;
+		int iterations = 1;
+		if (connected) {
+			auto start = Clock::now();
+			for (int i = 0; i < iterations; i++) {
+				
+				sendDmx(*blackout);
+				
+			}
+			auto end = Clock::now();
+			duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+			averageDuration = duration / iterations;
 		}
 	}
 
